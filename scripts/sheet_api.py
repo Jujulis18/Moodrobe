@@ -17,26 +17,27 @@ class SheetApi:
             st.info("Début de la connexion à Google Sheets")
             
             scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-            st.write("Contenu du secret:", st.secrets.get("gcp_service_account"))
+            
 
             if "gcp_service_account" in st.secrets: 
                 creds_dict = st.secrets["gcp_service_account"]
-                print("Clés du secret:", list(creds_dict.keys()) if creds_dict else None)
                 creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
                 #st.info("Mode CLOUD détecté (Streamlit secrets)")
             #else:  
             #    st.info("Get secret")
             #    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
             #    st.info("Mode LOCAL détecté (credentials.json)")
-
+                st.write("Contenu du secret:", creds)
                 client = gspread.authorize(creds)
+                st.write("Client:", client)
                 sheet = client.open("moodrobe_sheet").sheet1
+                st.write("Sheet:", sheet)
                 IS_PUBLIC = False
                 #st.info("Mode PRIVÉ : accès Google Sheets activé")
 
             return sheet, IS_PUBLIC
 
-        except Exception:
+        except Exception as e:
             IS_PUBLIC = True
             st.error(f"Erreur lors de la connexion : {e}")
             print("Stacktrace complète :", e, flush=True)
