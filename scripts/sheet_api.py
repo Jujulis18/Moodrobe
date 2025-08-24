@@ -19,7 +19,7 @@ class SheetApi:
             
             if "gcp_service_account" in st.secrets: 
                 creds_dict = st.secrets["gcp_service_account"]
-                creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
+                creds = Credentials.from_service_account_info(dict(creds_dict), scopes=scope)
                 #st.info("Mode CLOUD détecté (Streamlit secrets)")
             #else:  
             #    st.info("Get secret")
