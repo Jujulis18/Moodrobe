@@ -1,0 +1,9 @@
+# Secrets
+.env
+*.env
+credentials.json
+
+# Autres fichiers à ignorer
+__pycache__/
+*.pyc
+.DS_Store
