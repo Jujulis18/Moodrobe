@@ -14,7 +14,7 @@ def show():
     ##st.set_page_config(layout="wide")
 
     IS_PUBLIC = st.session_state.IS_PUBLIC
-    if !IS_PUBLIC:
+    if ~IS_PUBLIC:
         sheet_api = st.session_state.sheet_api
         df = sheet_api.get_all_data()
         st.dataframe(df)
