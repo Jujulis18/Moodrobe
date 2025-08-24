@@ -15,17 +15,16 @@ class SheetApi:
     def _connexion():
         try:
            
-            scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+            scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
             
             if "gcp_service_account" in st.secrets: 
                 creds_dict = st.secrets["gcp_service_account"]
-                creds = Credentials.from_service_account_info(dict(creds_dict), scopes=scope)
+                creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
                 #st.info("Mode CLOUD détecté (Streamlit secrets)")
             #else:  
             #    st.info("Get secret")
             #    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
             #    st.info("Mode LOCAL détecté (credentials.json)")
-            if creds_dict:
 
                 client = gspread.authorize(creds)
                 sheet = client.open("moodrobe_sheet").sheet1
