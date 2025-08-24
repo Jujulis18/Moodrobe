@@ -29,4 +29,5 @@ def predict_clothes(image):
 
     annotated_img = results[0].plot()
 
-    return detected_item, annotated_img
+    return detected_item, annotated_img, results[0]
+

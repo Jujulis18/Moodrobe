@@ -1,0 +1,50 @@
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import datetime
+import streamlit as st
+import pandas as pd
+
+
+
+class SheetApi:
+
+    def __init__(self):
+        self.sheet, self.IS_PUBLIC = self._connexion()
+
+    @staticmethod
+    def _connexion():
+        try:
+           
+            scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+            
+            if "gcp_service_account" in st.secrets: 
+                creds_dict = st.secrets["gcp_service_account"]
+                creds = ServiceAccountCredentials.from_json_keyfile_dict(dict(creds_dict), scope)
+                #st.info("Mode CLOUD détecté (Streamlit secrets)")
+            #else:  
+            #    st.info("Get secret")
+            #    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+            #    st.info("Mode LOCAL détecté (credentials.json)")
+            if creds_dict:
+
+                client = gspread.authorize(creds)
+                sheet = client.open("moodrobe_sheet").sheet1
+                IS_PUBLIC = False
+                #st.info("Mode PRIVÉ : accès Google Sheets activé")
+
+            return sheet, IS_PUBLIC
+
+        except Exception:
+            IS_PUBLIC = True
+            st.info("Mode PUBLIC : pas d'accès à Google Sheets")
+            return None, IS_PUBLIC
+    
+    def get_all_data(self):
+        all_rows = self.sheet.get_all_values()  
+        df = pd.DataFrame(all_rows[1:], columns=all_rows[0])  
+        return df
+
+
+    def save_data(self, data):
+        self.sheet.append_row(data)
+
