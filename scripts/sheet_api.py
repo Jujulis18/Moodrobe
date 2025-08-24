@@ -1,5 +1,5 @@
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 import datetime
 import streamlit as st
 import pandas as pd
@@ -19,7 +19,7 @@ class SheetApi:
             
             if "gcp_service_account" in st.secrets: 
                 creds_dict = st.secrets["gcp_service_account"]
-                creds = ServiceAccountCredentials.from_json_keyfile_dict(dict(creds_dict), scope)
+                creds = Credentials.from_service_account_info(creds_dict, scopes=scope)
                 #st.info("Mode CLOUD détecté (Streamlit secrets)")
             #else:  
             #    st.info("Get secret")

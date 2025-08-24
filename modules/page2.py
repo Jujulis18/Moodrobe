@@ -14,11 +14,12 @@ def show():
     ##st.set_page_config(layout="wide")
 
     IS_PUBLIC = st.session_state.IS_PUBLIC
-    sheet_api = st.session_state.sheet_api
-    df = sheet_api.get_all_data()
-    st.dataframe(df)
+    if !IS_PUBLIC:
+        sheet_api = st.session_state.sheet_api
+        df = sheet_api.get_all_data()
+        st.dataframe(df)
 
-    # --- Exemple de données : dictionnaire {jour: [couleur1, couleur2, couleur3]}
+    
     colors_per_day = {
         1: ["#FF0000", "#00FF00", "#0000FF"],
         2: ["#FFFF00", "#FFA500"],
@@ -26,12 +27,12 @@ def show():
         5: ["#8A2BE2", "#00FFFF", "#FF69B4"]
     }
 
-    # Mois et année
+  
     year = 2025
     month = 8
-    cal = calendar.monthcalendar(year, month)  # liste de semaines
+    cal = calendar.monthcalendar(year, month)  
 
-    # CSS pour le calendrier
+   
     st.markdown("""
     <style>
     .calendar { 
@@ -58,14 +59,13 @@ def show():
     </style>
     """, unsafe_allow_html=True)
 
-    # Construction du calendrier HTML
+   
     html = '<div class="calendar">'
 
-    # Titres des jours
     for d in ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]:
         html += f'<div class="day"><div class="day-number">{d}</div></div>'
 
-    # Cases pour chaque semaine
+   
     for week in cal:
         for day in week:
             if day == 0:
